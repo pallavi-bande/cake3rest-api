@@ -48,6 +48,7 @@ Router::defaultRouteClass(DashedRoute::class);
 Router::prefix('api', function ($routes) {
     $routes->extensions(['json', 'xml']);
     $routes->resources('Cocktails');
+    $routes->resources('Products');
 });
 
 Router::scope('/', function (RouteBuilder $routes) {

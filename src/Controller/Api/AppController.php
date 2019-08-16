@@ -25,4 +25,19 @@ class AppController extends Controller
             ]
         ]
     ];
+
+
+    public function beforeFilter(Event $event)
+    {
+       
+        parent::beforeFilter($event);
+        $this->response = $this->response->cors($this->request)
+        ->allowOrigin(['*'])
+        ->allowMethods(['GET', 'POST'])
+        ->allowHeaders(['X-CSRF-Token'])
+        ->allowCredentials()
+        ->exposeHeaders(['Link'])
+        ->maxAge(300)
+        ->build();
+    }
 }

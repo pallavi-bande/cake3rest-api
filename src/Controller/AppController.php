@@ -5,6 +5,16 @@ use Cake\Controller\Controller;
 
 class AppController extends Controller {
 
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->loadComponent('RequestHandler', [
+            'enableBeforeRedirect' => false,
+        ]);
+        $this->loadComponent('Flash');
+     }
+
     use \Crud\Controller\ControllerTrait;
 
     public $components = [
@@ -24,4 +34,18 @@ class AppController extends Controller {
             ]
         ]
     ];
+
+    public function beforeFilter(Event $event)
+    {
+       
+        parent::beforeFilter($event);
+        $this->response = $this->response->cors($this->request)
+        ->allowOrigin(['*'])
+        ->allowMethods(['GET', 'POST'])
+        ->allowHeaders(['X-CSRF-Token'])
+        ->allowCredentials()
+        ->exposeHeaders(['Link'])
+        ->maxAge(300)
+        ->build();
+    }
 }
